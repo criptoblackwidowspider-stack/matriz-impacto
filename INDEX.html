@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor de Impacto Físico Universal</title>
+    <style>
+        body {
+            background-color: #0c0f12;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background-color 0.05s ease;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            background: #131920;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            max-width: 90%;
+            width: 400px;
+        }
+        input {
+            background: #0c0f12;
+            border: 1px solid #00ffcc;
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        button {
+            background: #00ffcc;
+            color: #0c0f12;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 85%;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #fff;
+            box-shadow: 0 0 15px #fff;
+        }
+        .log {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #88a0a8;
+            text-align: left;
+            height: 60px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>⚡ CORE DIGITAL: PULSO DE IMPACTO FÍSICO</h2>
+    <p>Modelado de vectores de éxito en el presente continuo</p>
+    
+    <input type="number" id="potencia" placeholder="Magnitud del Impulso (1-150 GW)" min="1" max="150">
+    <button onclick="ejecutarImpactoFisico()">FORZAR CAMBIO DE REALIDAD</button>
+    
+    <div class="log" id="terminalLog">> Sistema listo para inyección de frecuencia...</div>
+</div>
+
+<script>
+    let audioCtx = null;
+
+    function ejecutarImpactoFisico() {
+        const potencia = parseFloat(document.getElementById('potencia').value);
+        const log = document.getElementById('terminalLog');
+        
+        if (!potencia || potencia < 1 || potencia > 150) {
+            log.innerHTML = "❌ Error: Ingrese una magnitud válida (1-150 GW).";
+            return;
+        }
+
+        log.innerHTML = `📡 [AGENTE]: Inyectando vector de ${potencia} GW...`;
+        
+        // 1. ACCIÓN FÍSICA: Audio de hardware sintetizado (PC, Android, iPhone)
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        const oscilador = audioCtx.createOscillator();
+        const ganancia = audioCtx.createGain();
+        
+        oscilador.type = 'sawtooth'; // Onda agresiva
+        oscilador.frequency.setValueAtTime(200 + (potencia * 4), audioCtx.currentTime); 
+        
+        ganancia.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        ganancia.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1.5);
+        
+        oscilador.connect(ganancia);
+        ganancia.connect(audioCtx.destination);
+        oscilador.start();
+        oscilador.stop(audioCtx.currentTime + 1.5);
+
+        // 2. ACCIÓN FÍSICA: Vibración Háptica (Soportado en Android)
+        if (navigator.vibrate) {
+            log.innerHTML += "<br>📳 [HARDWARE]: Forzando ráfaga háptica celular...";
+            navigator.vibrate([200, 100, 200, 100, 400]);
+        }
+
+        // 3. ACCIÓN FÍSICA: Ráfaga Lumínica Visual (Efecto estroboscópico ambiental)
+        if (potencia >= 50) {
+            log.innerHTML += "<br>💡 [ENTORNO]: Modulando ráfagas de fotones...";
+            let conteo = 0;
+            const intervalo = setInterval(() => {
+                document.body.style.backgroundColor = (conteo % 2 === 0) ? "#ffffff" : "#0c0f12";
+                conteo++;
+                if (conteo >= 12) {
+                    clearInterval(intervalo);
+                    document.body.style.backgroundColor = "#0c0f12";
+                    
+                    // Condición extrema (>=100): Simula colapso de interfaz redirigiendo la pestaña
+                    if (potencia >= 100) {
+                        log.innerHTML += "<br>🔒 [CRÍTICO]: Forzando salida por sobrecarga...";
+                        setTimeout(() => {
+                            window.location.href = "about:blank";
+                        }, 1000);
+                    }
+                }
+            }, 60);
+        }
+    }
+</script>
+</body>
+</html>
