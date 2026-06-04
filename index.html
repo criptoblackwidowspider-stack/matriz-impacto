@@ -140,7 +140,6 @@
         <input type="range" id="vibracionSlider" class="range-slider" min="1" max="150" value="75">
     </div>
 </div>
-
 <script>
     const canvas = document.getElementById('plasmaCanvas');
     const ctx = canvas.getContext('2d');
@@ -165,14 +164,11 @@
     window.addEventListener('resize', reajustarDimensiones);
     reajustarDimensiones();
 
-    // RENDERIZADOR CUÁNTICO: Genera la matriz de plasma líquido fluido
     function buclePlasma() {
         if (!ejecutando) return;
 
         const ancho = canvas.width;
         const alto = canvas.height;
-        
-        // Factor de compresión interna para evitar congelamientos en iOS/Android
         const resolucion = 4; 
         const w = Math.ceil(ancho / resolucion);
         const h = Math.ceil(alto / resolucion);
@@ -180,7 +176,6 @@
         const buffer = ctx.createImageData(w, h);
         const pixeles = buffer.data;
 
-        // La velocidad de transmutación depende directamente del slider
         cicloTiempo += 0.025 * (factorVibracion * 0.05 + 1);
 
         for (let y = 0; y < h; y++) {
@@ -188,7 +183,6 @@
                 const cx = x / w - 0.5;
                 const cy = y / h - 0.5;
 
-                // Ecuaciones de oscilación de plasma por ondas combinadas
                 let o1 = Math.sin(cx * 7 + cicloTiempo);
                 let o2 = Math.sin(10 * (cx * Math.sin(cicloTiempo / 2) + cy * Math.cos(cicloTiempo / 3)) + cicloTiempo);
                 let dist_x = cx + 0.5 * Math.sin(cicloTiempo / 5);
@@ -197,29 +191,25 @@
                 
                 let plasmaTotal = o1 + o2 + o3;
 
-                // Generación de espectro cromático reactivo al slider
                 const r = Math.floor(Math.sin(plasmaTotal * Math.PI) * 127 + 128);
                 const g = Math.floor(Math.sin(plasmaTotal * Math.PI + (2 * Math.PI / 3)) * 127 + 128);
                 const b = Math.floor(Math.sin(plasmaTotal * Math.PI + (4 * Math.PI / 3)) * 127 + 128);
 
                 const offset = (x + y * w) * 4;
                 
-                // Distribución energética de colores controlada por la vibración
                 pixeles[offset]     = Math.floor(r * (factorVibracion / 150)); 
                 pixeles[offset + 1] = Math.floor(g * (1 - (factorVibracion / 250)));                                      
                 pixeles[offset + 2] = Math.floor(b * (1 - factorVibracion / 150)); 
-                pixeles[offset + 3] = 255; // Opacidad total                                    
+                pixeles[offset + 3] = 255;                                    
             }
         }
 
-        // Proyectar el cálculo de datos a pantalla completa de forma nativa
         const canvasFiltro = document.createElement('canvas');
         canvasFiltro.width = w;
         canvasFiltro.height = h;
         canvasFiltro.getContext('2d').putImageData(buffer, 0, 0);
         ctx.drawImage(canvasFiltro, 0, 0, ancho, alto);
 
-        // MODULACIÓN ACÚSTICA REAL: Cambia el zumbido infinito mientras arrastras el control
         if (osciladorPrimario && audioCtx) {
             const frecuenciaCalculada = 50 + (factorVibracion * 2.8);
             const microModulacion = Math.sin(cicloTiempo * 1.5) * (factorVibracion * 0.3);
@@ -229,12 +219,9 @@
         requestAnimationFrame(buclePlasma);
     }
 
-    // Monitoreo dinámico del slider táctil
     slider.addEventListener('input', function() {
         factorVibracion = parseFloat(this.value);
         label.innerText = `MODULACIÓN DE ONDA ACÚSTICA: ${Math.floor(factorVibracion * 2)} Hz`;
-        
-        // Forzar micro-vibración háptica física continua (Soportado en Android)
         if (navigator.vibrate) {
             navigator.vibrate(15);
         }
@@ -245,55 +232,6 @@
         btnMenu.style.display = "none";
     }
 
-    // DISPARADOR MAESTRO (Salto seguro de las restricciones de iOS/Android/Windows)
-    document.getElementById('btnActivar').addEventListener('click', function() {
-        ejecutando = true;
-        
-        // 1. FORZADO INTEGRAL DE PANTALLA COMPLETA NATIVA
-        try {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { /* Motor WebKit - iOS/Safari */
-                document.documentElement.webkitRequestFullscreen();
-            }
-        } catch (e) { console.log("Permisos de pantalla completa restringidos por el hardware."); }
-
-        // 2. APERTURA DE SOCKETS DE AUDIO INFINITO (Inmune a bloqueos por interacción previa)
-        try {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            if (!osciladorPrimario) {
-        // MODULACIÓN ACÚSTICA REAL: Cambia el zumbido infinito mientras arrastras el control
-        if (osciladorPrimario && audioCtx) {
-            const frecuenciaCalculada = 50 + (factorVibracion * 2.8);
-            const microModulacion = Math.sin(cicloTiempo * 1.5) * (factorVibracion * 0.3);
-            osciladorPrimario.frequency.setValueAtTime(frecuenciaCalculada + microModulacion, audioCtx.currentTime);
-        }
-
-        requestAnimationFrame(buclePlasma);
-    }
-
-    // Monitoreo dinámico del slider táctil
-    slider.addEventListener('input', function() {
-        factorVibracion = parseFloat(this.value);
-        label.innerText = `MODULACIÓN DE ONDA ACÚSTICA: ${Math.floor(factorVibracion * 2)} Hz`;
-        
-        if (navigator.vibrate) {
-            navigator.vibrate(15);
-        }
-    });
-
-    function restaurarMenu() {
-        panel.classList.remove('oculto');
-        btnMenu.style.display = "none";
-    }
-
-    // DISPARADOR MAESTRO
     document.getElementById('btnActivar').addEventListener('click', function() {
         ejecutando = true;
         
@@ -303,7 +241,7 @@
             } else if (document.documentElement.webkitRequestFullscreen) {
                 document.documentElement.webkitRequestFullscreen();
             }
-        } catch (e) { console.log("Pantalla completa restringida."); }
+        } catch (e) { console.log("Pantalla completa."); }
 
         try {
             if (!audioCtx) {
@@ -333,12 +271,12 @@
                 osciladorPrimario.start();
                 osciladorModulador.start();
             }
-        } catch (error) { console.log("Hardware de audio no disponible."); }
+        } catch (error) { console.log("Audio lock."); }
 
         document.getElementById('btnActivar').style.display = "none";
         document.getElementById('sliderContainer').style.display = "block";
         
-        setTimeout(() => {
+        setTimeout(function() {
             panel.classList.add('oculto');
             btnMenu.style.display = "block";
         }, 1000);
