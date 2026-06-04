@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SISTEMA COGNITIVO: DEEP PLASMA V3</title>
+    <title>NÚCLEO ACCIONABLE: DEEP PLASMA GENERATOR</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,7 +16,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #030508;
+            background-color: #040608;
             font-family: 'Courier New', Courier, monospace;
         }
         canvas {
@@ -27,39 +27,39 @@
             height: 100%;
             z-index: 1;
         }
-        .interface-panel {
+        .control-panel {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
-            background: rgba(8, 12, 18, 0.9);
+            background: rgba(7, 11, 16, 0.92);
             border: 2px solid #00ffcc;
-            padding: 25px;
+            padding: 30px;
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 0 35px rgba(0, 255, 204, 0.4);
             width: 90%;
-            max-width: 380px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            max-width: 390px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
-        .interface-panel.oculto {
+        .control-panel.oculto {
             opacity: 0;
-            transform: translate(-50%, -60%) scale(0.9);
-            pointer-events: none; /* Desactiva el panel para que no estorbe al tocar el plasma */
+            transform: translate(-50%, -55%) scale(0.85);
+            pointer-events: none;
         }
         h2 {
             color: #00ffcc;
-            margin-top: 0;
+            margin: 0 0 10px 0;
             font-size: 18px;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
         button {
             background: #00ffcc;
-            color: #05070a;
+            color: #040608;
             border: none;
             padding: 16px;
             font-size: 15px;
@@ -68,7 +68,6 @@
             border-radius: 6px;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
             transition: all 0.2s;
         }
@@ -76,73 +75,68 @@
             background: #fff;
             box-shadow: 0 0 25px #fff;
         }
-        /* Controles del Slider Táctil */
         .slider-box {
-            margin: 25px 0;
+            margin: 25px 0 10px 0;
             text-align: left;
         }
         label {
             color: #88a0a8;
             font-size: 11px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: bold;
+            letter-spacing: 0.5px;
         }
         .range-slider {
             -webkit-appearance: none;
             width: 100%;
             height: 8px;
             border-radius: 4px;
-            background: #141d26;
+            background: #111822;
             outline: none;
             border: 1px solid #00ffcc;
         }
         .range-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: #00ffcc;
             cursor: pointer;
-            box-shadow: 0 0 10px #00ffcc;
-            transition: transform 0.1s;
+            box-shadow: 0 0 12px #00ffcc;
         }
-        .range-slider::-webkit-slider-thumb:active {
-            transform: scale(1.3);
-            background: #fff;
-        }
-        .btn-reset {
+        .btn-menu-flotante {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
-            background: rgba(0, 255, 204, 0.2);
+            background: rgba(7, 11, 16, 0.8);
             border: 1px solid #00ffcc;
             color: #00ffcc;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
             cursor: pointer;
-            opacity: 0.6;
             display: none;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
         }
-        .btn-reset:hover { opacity: 1; }
     </style>
 </head>
 <body>
 
 <canvas id="plasmaCanvas"></canvas>
-<button class="btn-reset" id="btnMenu" onclick="mostrarMenu()">⚙️ MODIFICAR VECTOR</button>
+<button class="btn-menu-flotante" id="btnMenu" onclick="restaurarMenu()">⚙️ MODIFICAR FRECUENCIA</button>
 
-<div class="interface-panel" id="controlPanel">
-    <h2>NÚCLEO PLASMA AUTÓNOMO</h2>
-    <p style="color: #88a0a8; font-size: 11px; margin-bottom: 15px;">Fusión de frecuencias y geometría fluida perpetua</p>
+<div class="control-panel" id="controlPanel">
+    <h2>NÚCLEO DE INVERSIÓN FÍSICA</h2>
+    <p style="color: #88a0a8; font-size: 11px; margin: 0 0 20px 0;">Control háptico y cromático continuo en la red</p>
     
-    <button id="btnActivar">INICIALIZAR INTERFAZ</button>
+    <button id="btnActivar">INICIALIZAR SISTEMA</button>
     
     <div class="slider-box" id="sliderContainer" style="display: none;">
-        <label id="vibracionLabel">FACTOR DE VIBRACIÓN TRANSVERSAL: 75</label>
+        <label id="vibracionLabel">MODULACIÓN DE ONDA ACÚSTICA: 75 Hz</label>
         <input type="range" id="vibracionSlider" class="range-slider" min="1" max="150" value="75">
     </div>
 </div>
@@ -160,108 +154,157 @@
     let osciladorModulador = null;
     let nodoGanancia = null;
     
-    let activo = false;
+    let ejecutando = false;
     let factorVibracion = 75;
-    let tiempo = 0;
+    let cicloTiempo = 0;
 
-    function ajustarLienzo() {
+    function reajustarDimensiones() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', ajustarLienzo);
-    ajustarLienzo();
+    window.addEventListener('resize', reajustarDimensiones);
+    reajustarDimensiones();
 
-    // MOTOR GEOMÉTRICO DINÁMICO: Dibuja las corrientes de plasma en tiempo real
-    function animarPlasma() {
-        if (!activo) return;
+    // RENDERIZADOR CUÁNTICO: Genera la matriz de plasma líquido fluido
+    function buclePlasma() {
+        if (!ejecutando) return;
 
         const ancho = canvas.width;
         const alto = canvas.height;
-        const escala = 4; // Balance óptimo entre fidelidad visual y CPU celular
-        const w = Math.ceil(ancho / escala);
-        const h = Math.ceil(alto / escala);
         
-        const imageData = ctx.createImageData(w, h);
-        const data = imageData.data;
+        // Factor de compresión interna para evitar congelamientos en iOS/Android
+        const resolucion = 4; 
+        const w = Math.ceil(ancho / resolucion);
+        const h = Math.ceil(alto / resolucion);
+        
+        const buffer = ctx.createImageData(w, h);
+        const pixeles = buffer.data;
 
-        // Modifica la velocidad del fluido usando el valor del slider táctil
-        tiempo += 0.03 * (factorVibracion * 0.04 + 1);
+        // La velocidad de transmutación depende directamente del slider
+        cicloTiempo += 0.025 * (factorVibracion * 0.05 + 1);
 
         for (let y = 0; y < h; y++) {
             for (let x = 0; x < w; x++) {
-                const nx = x / w - 0.5;
-                const ny = y / h - 0.5;
+                const cx = x / w - 0.5;
+                const cy = y / h - 0.5;
 
-                // Ondas e interferencias de geometría no euclidiana
-                let wave1 = Math.sin(nx * 8 + tiempo);
-                let wave2 = Math.sin(12 * (nx * Math.sin(tiempo / 3) + ny * Math.cos(tiempo / 2)) + tiempo);
-                let cx = nx + 0.6 * Math.sin(tiempo / 4);
-                let cy = ny + 0.6 * Math.cos(tiempo / 3);
-                let wave3 = Math.sin(Math.sqrt(120 * (cx * cx + cy * cy) + 1) - tiempo);
+                // Ecuaciones de oscilación de plasma por ondas combinadas
+                let o1 = Math.sin(cx * 7 + cicloTiempo);
+                let o2 = Math.sin(10 * (cx * Math.sin(cicloTiempo / 2) + cy * Math.cos(cicloTiempo / 3)) + cicloTiempo);
+                let dist_x = cx + 0.5 * Math.sin(cicloTiempo / 5);
+                let dist_y = cy + 0.5 * Math.cos(cicloTiempo / 4);
+                let o3 = Math.sin(Math.sqrt(140 * (dist_x * dist_x + dist_y * dist_y) + 1) - cicloTiempo);
                 
-                let combinacion = wave1 + wave2 + wave3;
+                let plasmaTotal = o1 + o2 + o3;
 
-                // Paleta de colores líquida que transmuta según la posición del slider
-                const r = Math.floor(Math.sin(combinacion * Math.PI) * 127 + 128);
-                const g = Math.floor(Math.sin(combinacion * Math.PI + (2 * Math.PI / 3)) * 127 + 128);
-                const b = Math.floor(Math.sin(combinacion * Math.PI + (4 * Math.PI / 3)) * 127 + 128);
+                // Generación de espectro cromático reactivo al slider
+                const r = Math.floor(Math.sin(plasmaTotal * Math.PI) * 127 + 128);
+                const g = Math.floor(Math.sin(plasmaTotal * Math.PI + (2 * Math.PI / 3)) * 127 + 128);
+                const b = Math.floor(Math.sin(plasmaTotal * Math.PI + (4 * Math.PI / 3)) * 127 + 128);
 
-                const idx = (x + y * w) * 4;
-                // El factor de vibración deforma la cantidad de energía de los canales de color
-                data[idx]     = Math.floor(r * (factorVibracion / 150)); 
-                data[idx + 1] = Math.floor(g * (1 - (factorVibracion / 300)));                                      
-                data[idx + 2] = Math.floor(b * (1 - factorVibracion / 150)); 
-                data[idx + 3] = 255;                                    
+                const offset = (x + y * w) * 4;
+                
+                // Distribución energética de colores controlada por la vibración
+                pixeles[offset]     = Math.floor(r * (factorVibracion / 150)); 
+                pixeles[offset + 1] = Math.floor(g * (1 - (factorVibracion / 250)));                                      
+                pixeles[offset + 2] = Math.floor(b * (1 - factorVibracion / 150)); 
+                pixeles[offset + 3] = 255; // Opacidad total                                    
             }
         }
 
-        // Renderizado fluido escalado en pantalla completa
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = w;
-        tempCanvas.height = h;
-        tempCanvas.getContext('2d').putImageData(imageData, 0, 0);
-        ctx.drawImage(tempCanvas, 0, 0, ancho, alto);
+        // Proyectar el cálculo de datos a pantalla completa de forma nativa
+        const canvasFiltro = document.createElement('canvas');
+        canvasFiltro.width = w;
+        canvasFiltro.height = h;
+        canvasFiltro.getContext('2d').putImageData(buffer, 0, 0);
+        ctx.drawImage(canvasFiltro, 0, 0, ancho, alto);
 
-        // MUTACIÓN DE AUDIO CONTINUA: Modula el sonido en vivo al arrastrar el slider
+        // MODULACIÓN ACÚSTICA REAL: Cambia el zumbido infinito mientras arrastras el control
         if (osciladorPrimario && audioCtx) {
-            const freqBase = 55 + (factorVibracion * 2.5);
-            const modulacionOnda = Math.sin(tiempo * 2) * (factorVibracion * 0.4);
-            osciladorPrimario.frequency.setValueAtTime(freqBase + modulacionOnda, audioCtx.currentTime);
+            const frecuenciaCalculada = 50 + (factorVibracion * 2.8);
+            const microModulacion = Math.sin(cicloTiempo * 1.5) * (factorVibracion * 0.3);
+            osciladorPrimario.frequency.setValueAtTime(frecuenciaCalculada + microModulacion, audioCtx.currentTime);
         }
 
-        requestAnimationFrame(animarPlasma);
+        requestAnimationFrame(buclePlasma);
     }
 
-    // Monitorear cambios en el slider en tiempo real (Táctil y Mouse)
+    // Monitoreo dinámico del slider táctil
     slider.addEventListener('input', function() {
         factorVibracion = parseFloat(this.value);
-        label.innerText = `FACTOR DE VIBRACIÓN TRANSVERSAL: ${Math.floor(factorVibracion)}`;
+        label.innerText = `MODULACIÓN DE ONDA ACÚSTICA: ${Math.floor(factorVibracion * 2)} Hz`;
         
-        // Ejecuta ráfagas cortas de vibración física en Android al mover el control
+        // Forzar micro-vibración háptica física continua (Soportado en Android)
         if (navigator.vibrate) {
-            navigator.vibrate(20);
+            navigator.vibrate(15);
         }
     });
 
-    function mostrarMenu() {
+    function restaurarMenu() {
         panel.classList.remove('oculto');
         btnMenu.style.display = "none";
     }
 
-    // Inicialización del sistema completo al hacer clic
+    // DISPARADOR MAESTRO (Salto seguro de las restricciones de iOS/Android/Windows)
     document.getElementById('btnActivar').addEventListener('click', function() {
-        activo = true;
+        ejecutando = true;
         
-        // 1. FORZAR PANTALLA COMPLETA AUTOMÁTICA (Móviles y Computadoras)
+        // 1. FORZADO INTEGRAL DE PANTALLA COMPLETA NATIVA
         try {
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { /* Safari / iOS */
+            } else if (document.documentElement.webkitRequestFullscreen) { /* Motor WebKit - iOS/Safari */
+                document.documentElement.webkitRequestFullscreen();
+            }
+        } catch (e) { console.log("Permisos de pantalla completa restringidos por el hardware."); }
+
+        // 2. APERTURA DE SOCKETS DE AUDIO INFINITO (Inmune a bloqueos por interacción previa)
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (!osciladorPrimario) {
+        // MODULACIÓN ACÚSTICA REAL: Cambia el zumbido infinito mientras arrastras el control
+        if (osciladorPrimario && audioCtx) {
+            const frecuenciaCalculada = 50 + (factorVibracion * 2.8);
+            const microModulacion = Math.sin(cicloTiempo * 1.5) * (factorVibracion * 0.3);
+            osciladorPrimario.frequency.setValueAtTime(frecuenciaCalculada + microModulacion, audioCtx.currentTime);
+        }
+
+        requestAnimationFrame(buclePlasma);
+    }
+
+    // Monitoreo dinámico del slider táctil
+    slider.addEventListener('input', function() {
+        factorVibracion = parseFloat(this.value);
+        label.innerText = `MODULACIÓN DE ONDA ACÚSTICA: ${Math.floor(factorVibracion * 2)} Hz`;
+        
+        if (navigator.vibrate) {
+            navigator.vibrate(15);
+        }
+    });
+
+    function restaurarMenu() {
+        panel.classList.remove('oculto');
+        btnMenu.style.display = "none";
+    }
+
+    // DISPARADOR MAESTRO
+    document.getElementById('btnActivar').addEventListener('click', function() {
+        ejecutando = true;
+        
+        try {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
                 document.documentElement.webkitRequestFullscreen();
             }
         } catch (e) { console.log("Pantalla completa restringida."); }
 
-        // 2. ACTIVACIÓN SEGURA DEL CANAL DE AUDIO INFINITO
         try {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -273,3 +316,35 @@
             if (!osciladorPrimario) {
                 nodoGanancia = audioCtx.createGain();
                 osciladorPrimario = audioCtx.createOscillator();
+                osciladorModulador = audioCtx.createOscillator();
+
+                osciladorPrimario.type = 'triangle'; 
+                osciladorPrimario.frequency.setValueAtTime(50 + (factorVibracion * 2.8), audioCtx.currentTime);
+
+                osciladorModulador.type = 'sawtooth';
+                osciladorModulador.frequency.setValueAtTime(3 + (factorVibracion * 0.04), audioCtx.currentTime);
+
+                nodoGanancia.gain.setValueAtTime(0.22, audioCtx.currentTime);
+
+                osciladorModulador.connect(nodoGanancia.gain);
+                osciladorPrimario.connect(nodoGanancia);
+                nodoGanancia.connect(audioCtx.destination);
+
+                osciladorPrimario.start();
+                osciladorModulador.start();
+            }
+        } catch (error) { console.log("Hardware de audio no disponible."); }
+
+        document.getElementById('btnActivar').style.display = "none";
+        document.getElementById('sliderContainer').style.display = "block";
+        
+        setTimeout(() => {
+            panel.classList.add('oculto');
+            btnMenu.style.display = "block";
+        }, 1000);
+
+        buclePlasma();
+    });
+</script>
+</body>
+</html>
